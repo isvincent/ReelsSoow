@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="system" data-font="normal" data-device="auto" data-layout="auto">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>教學影片集</title>
+  <meta name="description" content="Reels 教學短影音集：瀏覽、搜尋、直接播放。">
+  <meta name="theme-color" content="#7c3aed">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="教學影片集">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 背景漂浮動畫 -->
+  <div class="bg-blobs" aria-hidden="true">
+    <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span><span class="blob b4"></span>
+  </div>
+  <div class="floaters" aria-hidden="true" id="floaters"></div>
+
+  <header class="topbar">
+    <a class="brand" href="./" aria-label="教學影片集">
+      <span class="brand-logo" aria-hidden="true">
+        <svg viewBox="0 0 64 64"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f43f5e"/><stop offset=".5" stop-color="#a855f7"/><stop offset="1" stop-color="#0ea5e9"/></linearGradient></defs><rect x="4" y="4" width="56" height="56" rx="16" fill="url(#lg)"/><rect x="20" y="12" width="24" height="40" rx="6" fill="none" stroke="#fff" stroke-width="4"/><path d="M28 25l10 7-10 7z" fill="#fff"/></svg>
+      </span>
+      <span class="brand-text" data-i18n="siteTitle">教學影片集</span>
+    </a>
+    <div class="top-actions">
+      <button class="icon-btn" id="btnRandom" data-i18n-title="random" title="隨機播放"><span aria-hidden="true">🎲</span></button>
+      <button class="icon-btn" id="btnRefresh" data-i18n-title="refresh" title="重新整理清單"><span aria-hidden="true">🔄</span></button>
+      <button class="icon-btn" id="btnInstall" hidden data-i18n-title="install" title="安裝到主畫面"><span aria-hidden="true">📲</span></button>
+      <button class="icon-btn settings-btn" id="btnSettings" data-i18n-title="settings" title="顯示與操作設定" aria-haspopup="dialog"><span aria-hidden="true">⚙️</span></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-kicker" data-i18n="kicker">🎬 Reels 短影音 · 一分鐘學一個觀念</p>
+        <h1 class="hero-title"><span data-i18n="siteTitle">教學影片集</span></h1>
+        <p class="hero-sub" data-i18n="heroSub">點一下卡片就能立刻播放。用搜尋找主題、按 ❤️ 收藏、看完自動打勾，一起把影片全部看完吧！</p>
+        <div class="stats">
+          <div class="stat"><b id="statTotal">0</b><span data-i18n="statTotal">部影片</span></div>
+          <div class="stat"><b id="statSeries">0</b><span data-i18n="statSeries">個主題</span></div>
+          <div class="stat"><b id="statLatest">—</b><span data-i18n="statLatest">最新上架</span></div>
+        </div>
+      </div>
+      <div class="hero-art" aria-hidden="true">
+        <div class="phone">
+          <div class="phone-screen">
+            <div class="reel r1">🌀</div><div class="reel r2">π</div><div class="reel r3">❤️</div>
+            <div class="play-big">▶</div>
+          </div>
+        </div>
+        <span class="spark s1">✨</span><span class="spark s2">⭐</span><span class="spark s3">🎵</span><span class="spark s4">💡</span>
+      </div>
+    </section>
+
+    <!-- 觀看進度 -->
+    <section class="progress-card" aria-live="polite">
+      <div class="progress-head">
+        <span>🏆 <span data-i18n="progress">我的觀看進度</span></span>
+        <b id="progressText">0 / 0</b>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+      <p class="progress-msg" id="progressMsg"></p>
+    </section>
+
+    <!-- 搜尋與工具列 -->
+    <section class="toolbar" role="search">
+      <label class="search">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input id="searchInput" type="search" autocomplete="off" data-i18n-ph="searchPh" placeholder="搜尋影片主題…（按 / 快速搜尋）">
+        <button class="search-clear" id="searchClear" hidden aria-label="清除">✕</button>
+      </label>
+      <div class="tool-row">
+        <label class="select">
+          <span aria-hidden="true">↕️</span>
+          <select id="sortSelect" aria-label="排序">
+            <option value="new" data-i18n="sortNew">日期：新 → 舊</option>
+            <option value="old" data-i18n="sortOld">日期：舊 → 新</option>
+            <option value="az" data-i18n="sortAz">名稱：A → Z</option>
+            <option value="size" data-i18n="sortSize">檔案：大 → 小</option>
+          </select>
+        </label>
+        <div class="seg" role="group" aria-label="檢視方式">
+          <button class="seg-btn active" data-view="grid" data-i18n-title="viewGrid" title="卡片">▦</button>
+          <button class="seg-btn" data-view="list" data-i18n-title="viewList" title="清單">☰</button>
+        </div>
+      </div>
+      <div class="chips" id="chips" role="tablist"></div>
+    </section>
+
+    <p class="result-info" id="resultInfo"></p>
+
+    <section class="grid" id="grid" aria-live="polite"></section>
+
+    <div class="empty" id="emptyState" hidden>
+      <div class="empty-art" aria-hidden="true">🔭</div>
+      <p data-i18n="empty">找不到符合的影片，換個關鍵字試試看！</p>
+    </div>
+    <div class="loading" id="loading">
+      <div class="loader" aria-hidden="true"><i></i><i></i><i></i></div>
+      <p data-i18n="loading">影片清單載入中…</p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><span data-i18n="footer">教學影片集 · 影片持續擴增中</span> · <span id="sourceInfo"></span></p>
+    <p><a id="folderLink" href="#" target="_blank" rel="noopener" data-i18n="openFolder">📁 開啟雲端資料夾</a></p>
+  </footer>
+
+  <!-- 播放視窗 -->
+  <div class="modal" id="player" role="dialog" aria-modal="true" aria-labelledby="playerTitle" hidden>
+    <div class="modal-backdrop" data-close></div>
+    <div class="modal-box">
+      <button class="modal-close" data-close aria-label="關閉">✕</button>
+      <div class="player-wrap">
+        <div class="player-frame" id="playerFrame">
+          <div class="frame-loading"><div class="loader"><i></i><i></i><i></i></div></div>
+        </div>
+      </div>
+      <div class="player-info">
+        <div class="player-badge" id="playerIcon">🎬</div>
+        <h2 id="playerTitle">—</h2>
+        <p class="player-meta" id="playerMeta"></p>
+        <p class="player-desc" id="playerDesc"></p>
+        <div class="player-actions">
+          <button class="pill" id="btnPrev">⬅️ <span data-i18n="prev">上一部</span></button>
+          <button class="pill" id="btnNext"><span data-i18n="next">下一部</span> ➡️</button>
+          <button class="pill fav-pill" id="btnFav">🤍 <span data-i18n="fav">收藏</span></button>
+          <button class="pill" id="btnShare">🔗 <span data-i18n="share">複製連結</span></button>
+          <a class="pill" id="btnDrive" target="_blank" rel="noopener">↗️ <span data-i18n="openDrive">在雲端硬碟開啟</span></a>
+        </div>
+        <p class="kbd-hint" data-i18n="kbdHint">鍵盤：← → 切換影片，Esc 關閉</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ⚙️ 顯示與操作設定 -->
+  <div class="drawer" id="settings" role="dialog" aria-modal="true" aria-labelledby="settingsTitle" hidden>
+    <div class="modal-backdrop" data-close-settings></div>
+    <aside class="drawer-panel">
+      <div class="drawer-head">
+        <h2 id="settingsTitle">⚙️ <span data-i18n="settings">顯示與操作設定</span></h2>
+        <button class="modal-close static" data-close-settings aria-label="關閉">✕</button>
+      </div>
+
+      <div class="set-group">
+        <h3>🖥️ <span data-i18n="sFullscreen">全螢幕</span></h3>
+        <div class="seg wide" data-setting="fullscreen">
+          <button data-val="on" data-i18n="on">開啟</button>
+          <button data-val="off" data-i18n="off">關閉</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>🔊 <span data-i18n="sSound">音效</span></h3>
+        <div class="seg wide" data-setting="sound">
+          <button data-val="on" data-i18n="on">開啟</button>
+          <button data-val="off" data-i18n="off">關閉</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>📱 <span data-i18n="sDevice">裝置</span></h3>
+        <div class="seg wide" data-setting="device">
+          <button data-val="auto" data-i18n="auto">自動</button>
+          <button data-val="mobile" data-i18n="mobile">手機</button>
+          <button data-val="tablet" data-i18n="tablet">平板</button>
+          <button data-val="desktop" data-i18n="desktop">電腦</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>🔄 <span data-i18n="sLayout">版面</span></h3>
+        <div class="seg wide" data-setting="layout">
+          <button data-val="auto" data-i18n="auto">自動</button>
+          <button data-val="portrait" data-i18n="portrait">直式</button>
+          <button data-val="landscape" data-i18n="landscape">橫式</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>🌐 <span data-i18n="sLang">語言</span></h3>
+        <div class="seg wide" data-setting="lang">
+          <button data-val="zh">繁體中文</button>
+          <button data-val="en">English</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>🔠 <span data-i18n="sFont">字體</span></h3>
+        <div class="seg wide" data-setting="font">
+          <button data-val="small" data-i18n="small">縮小</button>
+          <button data-val="normal" data-i18n="normal">標準</button>
+          <button data-val="large" data-i18n="large">放大</button>
+        </div>
+      </div>
+      <div class="set-group">
+        <h3>🎨 <span data-i18n="sTheme">色系</span></h3>
+        <div class="seg wide" data-setting="theme">
+          <button data-val="system" data-i18n="system">跟隨系統</button>
+          <button data-val="light" data-i18n="light">亮色</button>
+          <button data-val="dark" data-i18n="dark">暗色</button>
+        </div>
+      </div>
+
+      <div class="set-footer">
+        <button class="pill" id="btnResetSettings">↩️ <span data-i18n="reset">恢復預設</span></button>
+        <button class="pill" id="btnClearProgress">🧹 <span data-i18n="clearProgress">清除觀看紀錄</span></button>
+      </div>
+    </aside>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

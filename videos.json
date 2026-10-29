@@ -1,0 +1,20 @@
+{
+  "title": "教學影片集",
+  "folder": "Reels",
+  "updated": "2026-10-29T09:00:00.000Z",
+  "count": 12,
+  "videos": [
+    {"id":"1L3-IoaN1vkjBHztxCBiMEZsajy_ivgLI","title":"HRV","file":"HRV.mp4","date":"2026-10-29T06:29:49.767Z","size":6693960,"mime":"video/mp4","category":"","description":""},
+    {"id":"1DHVvW_Q15sakwXC3i8XENjs5kS0WNEDV","title":"呼吸","file":"呼吸.mp4","date":"2026-10-29T06:29:02.842Z","size":13584415,"mime":"video/mp4","category":"","description":""},
+    {"id":"1bs54vzMWTX_9mRj-R91LoGSg_j-dV3Hf","title":"心跳","file":"心跳.mp4","date":"2026-10-29T06:08:55.595Z","size":9537638,"mime":"video/mp4","category":"","description":""},
+    {"id":"1uyf748Y_9gzQgaFKaDF5naG5ExJeXJDd","title":"主動式ETF_A","file":"主動式ETF_A.mp4","date":"2026-10-26T12:13:50.586Z","size":11726525,"mime":"video/mp4","category":"","description":""},
+    {"id":"1plPT-XIR-2NHEkzMS73Ek-25MBp1heaj","title":"圓周率2","file":"圓周率2.mp4","date":"2026-10-26T11:47:48.272Z","size":8987498,"mime":"video/mp4","category":"","description":""},
+    {"id":"10eTE81ZwvTRyL6qxR9YWwjL2tW4gwuf0","title":"圓周率1","file":"圓周率1.mp4","date":"2026-10-26T09:43:58.897Z","size":55596817,"mime":"video/mp4","category":"","description":""},
+    {"id":"1QW5cEdA4iXRa4jWKGcdAS0c0XYNgbwxP","title":"絕對零度","file":"絕對零度.mp4","date":"2026-10-26T07:51:42.821Z","size":4268155,"mime":"video/mp4","category":"","description":""},
+    {"id":"1nP1AK_9rMwKDW3SvK9eEcsCyAauoBptp","title":"主動式ETF_B","file":"主動式ETF_B.mp4","date":"2026-10-26T07:43:17.227Z","size":6867647,"mime":"video/mp4","category":"","description":""},
+    {"id":"1NG1_XkefOfgL0nkwxYk_QwAroPNaaxRf","title":"所有權","file":"所有權.mp4","date":"2026-10-26T07:10:21.512Z","size":6477775,"mime":"video/mp4","category":"","description":""},
+    {"id":"1rMUX7bccp8QBI2Z6yA5gBoCsq_Lg0pxM","title":"颱風_C","file":"颱風_C.mp4","date":"2026-10-25T11:36:49.001Z","size":22390127,"mime":"video/mp4","category":"","description":""},
+    {"id":"1xHvynhPCVYurXp1OeL5b7oeZ3u9C-8Kn","title":"颱風_B","file":"颱風_B.mp4","date":"2026-10-25T11:30:14.142Z","size":10824730,"mime":"video/mp4","category":"","description":""},
+    {"id":"1wsghskcgE37brHIljyQB-Gq2Pal7UfmZ","title":"颱風_A","file":"颱風_A.mp4","date":"2026-10-25T11:18:41.353Z","size":32249389,"mime":"video/mp4","category":"","description":""}
+  ]
+}
