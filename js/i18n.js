@@ -33,6 +33,7 @@ window.I18N = {
     allDone: '恭喜！全部影片都看完了 🏆', cleared: '觀看紀錄已清除', resetDone: '已恢復預設設定',
     fsFail: '此瀏覽器不支援全螢幕', installed: '已安裝到主畫面 🎉',
     noVideo: '目前沒有影片', unit: '部',
+    added: n => `🆕 新上架 ${n} 部影片！`,
     dateFmt: 'zh-TW'
   },
   en: {
@@ -68,6 +69,7 @@ window.I18N = {
     allDone: 'Congrats! All videos watched 🏆', cleared: 'History cleared', resetDone: 'Settings reset',
     fsFail: 'Fullscreen not supported', installed: 'Installed 🎉',
     noVideo: 'No videos yet', unit: '',
+    added: n => `🆕 ${n} new video(s) added!`,
     dateFmt: 'en-US'
   }
 };

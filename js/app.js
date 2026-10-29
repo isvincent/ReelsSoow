@@ -104,7 +104,8 @@
     let data = null, source = 'json';
     const api = (CFG.API_URL || '').trim();
     if (api) {
-      const url = api + (force ? (api.includes('?') ? '&' : '?') + 'nocache=1' : '');
+      // 每次都略過 Apps Script 快取，並加時間戳避免瀏覽器／CDN 用舊資料
+      const url = api + (api.includes('?') ? '&' : '?') + 'nocache=1&t=' + Date.now();
       try { data = await fetchJson(url); source = 'api'; }
       catch (e) { try { data = await jsonp(url); source = 'api'; } catch (e2) { /* 改用備用 */ } }
     }
@@ -506,8 +507,9 @@
   async function boot(force) {
     $('#loading').hidden = videos.length > 0;
     const { list, source } = await loadData(force);
+    // 上架日期＝上傳到雲端硬碟的時間（created）；舊檔的「修改時間」可能早於上傳日
     videos = list.filter(v => v && v.id && v.title)
-      .map(v => Object.assign({}, v, { date: v.date || v.created || '' }));
+      .map(v => Object.assign({}, v, { date: v.created || v.date || '' }));
     $('#loading').hidden = true;
     $('#sourceInfo').textContent = T().src[source] || '';
     render();
@@ -524,6 +526,19 @@
   initEvents();
   initFloaters();
   boot(false);
+
+  // 回到頁面時或每 3 分鐘自動檢查新影片
+  let lastCheck = Date.now();
+  async function autoCheck() {
+    if (document.hidden || !$('#player').hidden || Date.now() - lastCheck < 60000) return;
+    lastCheck = Date.now();
+    const before = new Set(videos.map(v => v.id));
+    await boot(false);
+    const added = videos.filter(v => !before.has(v.id)).length;
+    if (added) { toast(T().added(added)); SFX.play('fav'); }
+  }
+  document.addEventListener('visibilitychange', autoCheck);
+  setInterval(autoCheck, 180000);
 
   if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && !/[?&]nosw\b/.test(location.search)) {
     addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
