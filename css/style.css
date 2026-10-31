@@ -234,12 +234,12 @@ mark { background: var(--yellow); color: #1f1537; border-radius: 4px; padding: 0
 .player-wrap { display: flex; justify-content: center; }
 /* 播放框：--dock = 影片下方預留給雲端硬碟控制列的高度（0 = 控制列疊在影片上） */
 .player-frame {
-  --dock: 0px; --pcap: 84vh; --vmax: 712px;
+  --dock: 0px; --fold: 0px; --pcap: 84vh; --vmax: 712px;
   --ph: min(var(--pcap), calc(var(--vmax) + var(--dock) + 8px));
   position: relative; height: var(--ph); width: calc((var(--ph) - 8px - var(--dock)) * 9 / 16 + 8px);
   border-radius: 20px; overflow: hidden; background: #000; background-image: var(--rainbow); padding: 4px;
 }
-html[data-controls="below"] .player-frame { --dock: 290px; --pcap: 90vh; }
+html[data-controls="below"] .player-frame { --dock: 285px; --pcap: 90vh; --fold: 140px; }
 .player-clip { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 16px; background: #000; }
 /* iframe 比框高 2×dock 並上移 dock：影片貼齊上緣，控制列落在下方黑色區，頂端彈出鈕被裁掉 */
 .player-clip iframe { position: absolute; left: 0; top: calc(-1 * var(--dock)); width: 100%; height: calc(100% + var(--dock)); border: 0; background: #000; display: block; }
@@ -327,8 +327,9 @@ html[data-layout="landscape"] .hero { grid-template-columns: 1.3fr 1fr; text-ali
   .stat { min-width: 0; flex: 1; padding: 8px 10px; }
   .stat b { font-size: 1.3rem; }
   .modal-box { margin: 0; width: 100%; max-height: 100vh; height: 100%; border-radius: 0; padding: 12px; align-content: start; }
-  .player-frame { --ph: min(calc(100vh - 24px), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); }
-  @supports (height: 100svh) { .player-frame { --ph: min(calc(100svh - 24px), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); } }
+  /* 手機：影片盡量放大；底部音量／設定列（--fold）可落在畫面下緣外，往下捲就看得到，暫停／快轉列仍在畫面內 */
+  .player-frame { --ph: min(calc(100vh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); }
+  @supports (height: 100svh) { .player-frame { --ph: min(calc(100svh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); } }
   .player-info h2 { font-size: 1.5rem; }
   .kbd-hint { display: none; }
 }
