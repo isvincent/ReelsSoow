@@ -16,7 +16,7 @@
   };
 
   /* ---------- 狀態 ---------- */
-  const DEFAULTS = { fullscreen: 'off', sound: 'on', device: 'auto', layout: 'auto', lang: 'zh', font: 'normal', theme: 'system' };
+  const DEFAULTS = { fullscreen: 'off', sound: 'on', device: 'auto', layout: 'auto', lang: 'zh', font: 'normal', theme: 'system', controls: 'below' };
   const settings = Object.assign({}, DEFAULTS, store.get('settings', {}));
   settings.fullscreen = document.fullscreenElement ? 'on' : 'off';
   const favs = new Set(store.get('favs', []));
@@ -123,6 +123,7 @@
     root.dataset.font = settings.font;
     root.dataset.device = settings.device;
     root.dataset.layout = settings.layout;
+    root.dataset.controls = settings.controls;
     root.lang = settings.lang === 'en' ? 'en' : 'zh-Hant';
     SFX.set(settings.sound === 'on');
 
@@ -307,14 +308,14 @@
     const v = shown[i];
     const st = styleOf(v);
     const frame = $('#playerFrame');
-    frame.innerHTML = '<div class="frame-loading"><div class="loader"><i></i><i></i><i></i></div></div>';
+    frame.innerHTML = '<div class="player-clip"><div class="frame-loading"><div class="loader"><i></i><i></i><i></i></div></div></div>';
     const ifr = document.createElement('iframe');
     ifr.src = previewUrl(v.id);
     ifr.allow = 'autoplay; fullscreen; picture-in-picture';
     ifr.allowFullscreen = true;
     ifr.title = v.title;
     ifr.onload = () => { const l = $('.frame-loading', frame); if (l) l.remove(); };
-    frame.appendChild(ifr);
+    $('.player-clip', frame).appendChild(ifr);
 
     const badge = $('#playerIcon');
     badge.textContent = st.icon;
