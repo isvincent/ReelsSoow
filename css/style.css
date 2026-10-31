@@ -232,9 +232,18 @@ mark { background: var(--yellow); color: #1f1537; border-radius: 4px; padding: 0
 .modal-close:hover { transform: rotate(90deg); background: var(--pink); color: #fff; }
 .modal-close.static { position: static; }
 .player-wrap { display: flex; justify-content: center; }
-.player-frame { position: relative; height: min(84vh, 720px); aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 0 0 4px transparent; background-image: var(--rainbow); padding: 4px; }
-.player-frame iframe { width: 100%; height: 100%; border: 0; border-radius: 16px; background: #000; display: block; }
-.frame-loading { position: absolute; inset: 4px; display: grid; place-items: center; background: #000; border-radius: 16px; }
+/* 播放框：--dock = 影片下方預留給雲端硬碟控制列的高度（0 = 控制列疊在影片上） */
+.player-frame {
+  --dock: 0px; --fold: 0px; --pcap: 84vh; --vmax: 712px;
+  --ph: min(var(--pcap), calc(var(--vmax) + var(--dock) + 8px));
+  position: relative; height: var(--ph); width: calc((var(--ph) - 8px - var(--dock)) * 9 / 16 + 8px);
+  border-radius: 20px; overflow: hidden; background: #000; background-image: var(--rainbow); padding: 4px;
+}
+html[data-controls="below"] .player-frame { --dock: 285px; --pcap: 90vh; --fold: 140px; }
+.player-clip { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: 16px; background: #000; }
+/* iframe 比框高 2×dock 並上移 dock：影片貼齊上緣，控制列落在下方黑色區，頂端彈出鈕被裁掉 */
+.player-clip iframe { position: absolute; left: 0; top: calc(-1 * var(--dock)); width: 100%; height: calc(100% + var(--dock)); border: 0; background: #000; display: block; }
+.frame-loading { position: absolute; inset: 0; z-index: 1; display: grid; place-items: center; background: #000; }
 .player-info { padding: 30px 8px 8px 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .player-badge { width: 72px; height: 72px; border-radius: 22px; display: grid; place-items: center; font-size: 2.4rem; color: #fff; font-weight: 900; background: linear-gradient(150deg, var(--c1, #ec4899), var(--c2, #8b5cf6)); box-shadow: var(--shadow); }
 .player-info h2 { margin: 6px 0 0; font-size: 1.9rem; font-weight: 900; line-height: 1.25; word-break: break-word; }
@@ -281,7 +290,8 @@ html[data-device="desktop"] .grid:not(.list) { grid-template-columns: repeat(5, 
 
 /* ===== 版面：直式／橫式 ===== */
 html[data-layout="portrait"] .modal-box { grid-template-columns: 1fr; width: min(560px, calc(100% - 24px)); }
-html[data-layout="portrait"] .player-frame { height: min(68vh, 640px); }
+html[data-layout="portrait"] .player-frame { --pcap: 68vh; --vmax: 632px; }
+html[data-controls="below"][data-layout="portrait"] .player-frame { --pcap: 86vh; }
 html[data-layout="portrait"] .player-info { padding: 0 4px; align-items: center; text-align: center; }
 html[data-layout="portrait"] .player-actions { justify-content: center; }
 html[data-layout="portrait"] .hero { grid-template-columns: 1fr; text-align: center; }
@@ -293,7 +303,8 @@ html[data-layout="landscape"] .hero { grid-template-columns: 1.3fr 1fr; text-ali
 /* ===== RWD（自動） ===== */
 @media (orientation: portrait) and (max-width: 900px) {
   html[data-layout="auto"] .modal-box { grid-template-columns: 1fr; width: min(560px, calc(100% - 24px)); }
-  html[data-layout="auto"] .player-frame { height: min(66vh, 640px); }
+  html[data-layout="auto"] .player-frame { --pcap: 66vh; --vmax: 632px; }
+  html[data-controls="below"][data-layout="auto"] .player-frame { --pcap: 86vh; }
   html[data-layout="auto"] .player-info { padding: 0 4px; align-items: center; text-align: center; }
   html[data-layout="auto"] .player-actions { justify-content: center; }
 }
@@ -316,7 +327,9 @@ html[data-layout="landscape"] .hero { grid-template-columns: 1.3fr 1fr; text-ali
   .stat { min-width: 0; flex: 1; padding: 8px 10px; }
   .stat b { font-size: 1.3rem; }
   .modal-box { margin: 0; width: 100%; max-height: 100vh; height: 100%; border-radius: 0; padding: 12px; align-content: start; }
-  .player-frame { height: auto; width: min(100%, 56vh); }
+  /* 手機：影片盡量放大；底部音量／設定列（--fold）可落在畫面下緣外，往下捲就看得到，暫停／快轉列仍在畫面內 */
+  .player-frame { --ph: min(calc(100vh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); }
+  @supports (height: 100svh) { .player-frame { --ph: min(calc(100svh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); } }
   .player-info h2 { font-size: 1.5rem; }
   .kbd-hint { display: none; }
 }
