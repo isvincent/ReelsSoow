@@ -330,6 +330,15 @@ html[data-layout="landscape"] .hero { grid-template-columns: 1.3fr 1fr; text-ali
   /* 手機：影片盡量放大；底部音量／設定列（--fold）可落在畫面下緣外，往下捲就看得到，暫停／快轉列仍在畫面內 */
   .player-frame { --ph: min(calc(100vh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); }
   @supports (height: 100svh) { .player-frame { --ph: min(calc(100svh - 24px + var(--fold)), calc((100vw - 32px) * 16 / 9 + var(--dock) + 8px)); } }
+  /* 以播放區實際寬度（cqw）計算，避免 100vw 比可用寬度大而讓影片左右被切、需要手動橫移 */
+  html[data-layout] .modal-box { width: 100%; overflow-x: hidden; }
+  html:not([data-layout="landscape"]) .player-wrap { container-type: inline-size; width: 100%; }
+  @supports (width: 1cqw) {
+    html:not([data-layout="landscape"]) .player-frame { --ph: min(calc(100vh - 24px + var(--fold)), calc((100cqw - 8px) * 16 / 9 + var(--dock) + 8px)); }
+  }
+  @supports (width: 1cqw) and (height: 100svh) {
+    html:not([data-layout="landscape"]) .player-frame { --ph: min(calc(100svh - 24px + var(--fold)), calc((100cqw - 8px) * 16 / 9 + var(--dock) + 8px)); }
+  }
   .player-info h2 { font-size: 1.5rem; }
   .kbd-hint { display: none; }
 }
