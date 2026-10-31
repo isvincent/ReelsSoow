@@ -1,5 +1,5 @@
 /* 教學影片集 — Service Worker（離線可開啟網站外殼） */
-const VERSION = 'reels-v4';
+const VERSION = 'reels-v5';
 const SHELL = [
   './', 'index.html', 'css/style.css',
   'js/config.js', 'js/i18n.js', 'js/sound.js', 'js/app.js',
